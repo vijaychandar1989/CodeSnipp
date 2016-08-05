@@ -1,0 +1,19 @@
+declare @id int
+declare @caste int
+declare @commid int
+
+declare samp cursor 
+for select st_id,caste from studentadmission where community=0 and not caste=0
+open samp
+fetch next from samp into @id,@caste;
+while @@fetch_status=0
+begin
+--print @id
+
+select @commid=comm_id from caste where caste_id=@caste
+update studentadmission set community=@commid where st_id=@id
+fetch next from samp into @id,@caste;
+end
+
+close samp
+deallocate samp

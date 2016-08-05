@@ -1,0 +1,14 @@
+CREATE PROCEDURE dbo.ListOFLocalServer 
+AS 
+BEGIN 
+ 
+CREATE TABLE #tempserverTable(servername VARCHAR(255)) 
+ 
+INSERT #tempserverTable EXEC master..XP_CMDShell 'OSQL -L' 
+ 
+DELETE # tempserverTable WHERE servername ='Servers:' 
+ 
+SELECT LTRIM(servername) FROM #tempserverTable WHERE servername!= 'NULL' 
+ 
+ DROP TABLE #tempserverTable
+END

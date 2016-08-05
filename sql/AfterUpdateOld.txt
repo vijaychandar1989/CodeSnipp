@@ -1,0 +1,25 @@
+CREATE TRIGGER trigServiceDetailsAftrUpdate  
+ON dbo.[Service.details]
+After Update
+AS
+	IF UPDATE(intServiceID)
+	begin
+	declare @HandsetID=(select [Service.Details].intHandsetID from [Service.Details] where ([Service.Details].intServiceID=intServiceID))
+	declare @SpareCharge = (SELECT     SUM(intSpareCost) AS TotalSparecost
+	                        FROM         [Service.details]
+	                        WHERE     (intHandsetid = @handsetID))
+	
+	update  [handset.Details] set intSparecost=@sum where intHandsetID=@handsetID 
+	end 
+CREATE TRIGGER UpdateServiceCharge
+ON dbo.[Service.details]
+FOR UPDATE
+AS
+	if update(intServiceID)
+begin
+     update [Handset.Details]
+           set intSwSCharge = sum(intServiceCharge)
+           from [Handset.Details],inserted
+           where ncHS=(select ncHS from [Settings.Engineer] where intEnggID=inserted.intEnggID) and intHandsetID=inserted.intHandsetID
+     
+end

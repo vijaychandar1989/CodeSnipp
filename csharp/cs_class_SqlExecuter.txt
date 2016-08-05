@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data.SqlClient;
+
+namespace WindowsFormsApplication1
+{
+    /// <summary>
+    /// This class performs the database operations. Pass on SQL statements and 
+    /// it will just return the data for you. 
+    /// </summary>
+    public static class DatabaseOperations
+    {
+        /// <summary>
+        /// This connection will do everything. Better to not throw connections 
+        /// on left and right.
+        /// </summary>
+        private static SqlConnection connectionForAllOperations;
+
+        /// <summary>
+        /// This method executes any non-reader command. Use it for INSERT, UPDATE 
+        /// and DELETE. It does not work for SELECT, sorry.
+        /// </summary>
+        public static void ExecuteSqlStatement(string sql)
+        {
+            if (connectionForAllOperations == null)
+            {
+                /// The connection will be opened only once, just before first operation.
+                connectionForAllOperations = new SqlConnection(
+                    Properties.Settings.Default.some_numbersConnectionString);
+                connectionForAllOperations.Open();
+            }
+
+            SqlCommand anyCommand = new SqlCommand(sql, connectionForAllOperations);
+            anyCommand.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// This method executes a reader command. Use for SELECT queries. 
+        /// </summary>
+        public static SqlDataReader ExecuteSqlReader(string sql)
+        {
+            if (connectionForAllOperations == null)
+            {
+                /// The connection will be opened only once, just before first operation.
+                connectionForAllOperations = new SqlConnection(
+                    Properties.Settings.Default.some_numbersConnectionString);
+                connectionForAllOperations.Open();
+            }
+
+            SqlCommand anyCommand = new SqlCommand(sql, connectionForAllOperations);
+            SqlDataReader anyReader = anyCommand.ExecuteReader();
+            return anyReader;
+        }
+
+    }
+}

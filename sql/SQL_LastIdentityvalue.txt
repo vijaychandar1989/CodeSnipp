@@ -1,0 +1,48 @@
+declare @ComplaintID int
+
+Select @ComplaintID=IDENT_CURRENT('dbo.Complaints') 
+print @ComplaintID
+
+-------------------------------------------------
+SELECT SCOPE_IDENTITY();
+/* Returns the value 1. This was inserted by the 
+INSERT statement two statements before this query.*/
+
+SELECT IDENT_CURRENT('t7');
+/* Returns value inserted into t7, that is in the trigger.*/
+
+SELECT IDENT_CURRENT('t6');
+/* Returns value inserted into t6. This was the INSERT statement four statements before this query.*/
+
+-- Do the following in Session 2.
+SELECT @@IDENTITY;
+/* Returns NULL because there has been no INSERT action 
+up to this point in this session.*/
+
+SELECT SCOPE_IDENTITY();
+/* Returns NULL because there has been no INSERT action 
+up to this point in this scope in this session.*/
+
+SELECT IDENT_CURRENT('t7');
+/* Returns the last value inserted into t7.*/
+
+------------------------------------------------
+
+
+SQL SERVER – @@IDENTITY vs SCOPE_IDENTITY() vs IDENT_CURRENT – Retrieve Last Inserted Identity of Record
+
+March 25, 2007 by pinaldave
+
+SELECT @@IDENTITY
+It returns the last IDENTITY value produced on a connection, regardless of the table that produced the value, and regardless of the scope of the statement that produced the value.
+@@IDENTITY will return the last identity value entered into a table in your current session. While @@IDENTITY is limited to the current session, it is not limited to the current scope. If you have a trigger on a table that causes an identity to be created in another table, you will get the identity that was created last, even if it was the trigger that created it.
+
+SELECT SCOPE_IDENTITY()
+It returns the last IDENTITY value produced on a connection and by a statement in the same scope, regardless of the table that produced the value.
+SCOPE_IDENTITY(), like @@IDENTITY, will return the last identity value created in the current session, but it will also limit it to your current scope as well. In other words, it will return the last identity value that you explicitly created, rather than any identity that was created by a trigger or a user defined function.
+
+SELECT IDENT_CURRENT(‘tablename’)
+It returns the last IDENTITY value produced in a table, regardless of the connection that created the value, and regardless of the scope of the statement that produced the value.
+IDENT_CURRENT is not limited by scope and session; it is limited to a specified table. IDENT_CURRENT returns the identity value generated for a specific table in any session and any scope.
+
+To avoid the potential problems associated with adding a trigger later on, always use SCOPE_IDENTITY() to return the identity of the recently added row in your T SQL Statement or Stored Procedure.

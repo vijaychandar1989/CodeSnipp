@@ -1,0 +1,5 @@
+Find: @([a-zA-Z0-9_]+),
+
+
+
+Replace: SqlParameter \1= new SqlParameter("@\1",I._\1);\ndb.parameters.Add(\1);

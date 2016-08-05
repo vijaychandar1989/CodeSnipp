@@ -1,0 +1,27 @@
+/****** Script for SelectTopNRows command from SSMS  ******/
+DECLARE @columns VARCHAR(8000)
+       SELECT @columns = COALESCE(@columns + ',[' + cast(AcHeadName as varchar) + ']'
+       ,                                 '[' + cast(AcHeadName as varchar)+ ']')
+       FROM    Fund_M_ACHead
+       GROUP BY AcHeadName
+      
+    drop table temp
+       
+declare @query varchar(max)
+set @query='SELECT   *  into temp   
+    
+ FROM (select [Fund_Expense].Project,Fund_M_ACHead.AcHeadName,[Fund_Expense].amount from  [fundserver].[dbo].[Fund_Expense] left join Fund_M_ACHead on [Fund_Expense].Achead=Fund_M_ACHead.AcHead_ID ) as fund
+ pivot
+ (sum(amount) for AcHeadName in ('+@columns+')
+ ) as pvt'
+ 
+
+ exec(@query)
+
+   select * from  temp
+
+ 
+ 
+--select * from [fundserver].[dbo].[Fund_Expense]
+
+--select * from Fund_M_ACHead

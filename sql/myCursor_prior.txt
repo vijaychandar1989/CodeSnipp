@@ -1,0 +1,19 @@
+declare @id int
+
+declare samp cursor scroll
+for select id from sample1
+open samp
+fetch last from samp into @id;
+print 'Fetchstatus '+Convert(varchar(20),@@fetch_status)
+print 'ID '+Convert(varchar(20),@id)
+while @@fetch_status=0
+begin
+print 'Fetchstatus inside'+Convert(varchar(20),@@fetch_status)
+print 'ID inside'+Convert(varchar(20),@id)
+--update sample1 set amount=amount+150 where id=@id
+
+fetch prior from samp into @id;
+end
+
+close samp
+deallocate samp

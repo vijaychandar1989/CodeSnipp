@@ -1,0 +1,20 @@
+CREATE TRIGGER myTrigger ON dbo.person
+AFTER UPDATE
+AS
+BEGIN
+INSERT SomeLogTable (FirstName, MiddleName, Surname.....etc)
+SELECT CASE
+WHEN d.FirstName <> i.FirstName THEN d.FirstName
+ELSE NULL
+END,
+CASE
+WHEN d.MiddleName <> i.MiddleName THEN d.MiddleName
+ELSE NULL
+END,
+CASE
+WHEN d.LastName <> i.LastName THEN d.LastName
+ELSE NULL
+END
+FROM Deleted d
+JOIN Inserted i ON d.SomeKeyField = i.SomeKeyField
+END

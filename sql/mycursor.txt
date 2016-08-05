@@ -1,0 +1,15 @@
+declare @id int
+
+declare samp cursor 
+for select id from sample1
+open samp
+fetch next from samp into @id;
+while @@fetch_status=0
+begin
+print @id
+update sample1 set amount=amount+150 where id=@id
+fetch next from samp into @id;
+end
+
+close samp
+deallocate samp

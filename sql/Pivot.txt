@@ -1,0 +1,65 @@
+alter procedure Report_ProjExpenseStatement 
+@project int 
+as
+ 
+begin
+
+declare @Datacollection varchar(1000)
+set @Datacollection=''
+
+
+
+
+SELECT  @Datacollection=@Datacollection +'['+ CAST((DateName(month, date)) as varchar(20)) + ' ' + CAST(YEAR(date) AS VARCHAR(10))+ '],'
+
+FROM
+    Fund_expense inner join dbo.Fund_M_ACHead on Fund_M_ACHead.AcHead_ID=Fund_expense.Achead
+
+ where Project=@project
+
+GROUP BY  DateName(month, date),CAST(YEAR(date) AS VARCHAR(10)) ,datepart(month,date)
+order by datepart(month,date) asc
+
+
+
+
+set @Datacollection=substring(@Datacollection,1,len(@Datacollection)-1)
+
+declare @SQlqry varchar(2000)
+set @SQlqry=''
+
+
+	
+SELECT 
+   AcHeadName, DateName(month, date) + ' ' + CAST(YEAR(date) AS VARCHAR(10)) AS MonthYear,
+    
+    SUM(amount) as Amount into #temp
+FROM
+    Fund_expense inner join dbo.Fund_M_ACHead on Fund_M_ACHead.AcHead_ID=Fund_expense.Achead
+
+ where Project=7
+GROUP BY  AcHeadName,date,DateName(month, date) + ' ' + CAST(YEAR(date) AS VARCHAR(10)) 
+
+
+
+end
+
+	SET @SQlqry = 'SELECT  AcHeadName,'+@Datacollection+'
+				FROM 
+				(	
+
+select * from #temp
+	) AS Att  
+				PIVOT
+				(
+					max(Amount)
+					FOR MonthYear  IN ('+@Datacollection+')  
+				) AS PivotTable drop table #temp'
+
+
+EXEC (@SQlqry)
+
+
+
+
+

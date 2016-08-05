@@ -1,0 +1,6 @@
+SET @str=(SELECT GROUP_CONCAT(Column_name) FROM information_schema.Columns WHERE table_name='City');
+ SET @str=(SELECT CONCAT('select ', @str,' from city '));
+
+
+ PREPARE stmt FROM @str;
+ EXECUTE stmt;

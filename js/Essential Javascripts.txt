@@ -1,0 +1,43 @@
+ 
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && ( charCode < 46 || charCode > 57))
+                return false;
+
+            return true;
+        }
+         function Readonly(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            ///if (charCode > 31 && ( charCode < 46 || charCode > 57))
+                return false;
+
+            ///return true;
+        }
+		
+		
+		 function funCalculate() {
+      
+            var qty = document.getElementById("ctl00_ContentPlaceHolder1_txtRecieved");
+           //var qty1 = document.getElementById("ctl00_ContentPlaceHolder1_txtAlreadyRecieved");
+            var reqUnitPrice = document.getElementById("ctl00_ContentPlaceHolder1_txtUnitPrice");
+            var amount = document.getElementById("ctl00_ContentPlaceHolder1_txtSubTotal");
+
+            var q = parseFloat(qty.value);
+            var rUnit = reqUnitPrice.value;
+
+            if (isNaN(q) && q == "") {
+                q = 0;
+            }
+            if (isNaN(rUnit) && rUnit == "") {
+                rUnit = 0;
+            }
+
+            var c = (parseFloat(q) * parseFloat(rUnit));
+
+            if (isNaN(c)) {
+                c = 0;
+            }
+            amount.value = (c.toFixed(2));
+           
+
+        }

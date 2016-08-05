@@ -1,0 +1,8 @@
+DECLARE str VARCHAR(MAX);
+SET str=SELECT COALESCE(SELECT * FROM City WHERE ID=1);
+SELECT str;
+
+
+
+ SELECT CONCAT(,);
+         

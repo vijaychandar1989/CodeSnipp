@@ -1,0 +1,62 @@
+
+//        $(document).ready(function () {
+
+//            //Code to fetch the users from webservice
+//            $.ajax({
+//                type: "POST",
+//                url: "Webservices/Autocomplete.asmx/GetMissionCodeByClientName",
+//                dataType: "json",
+//                data: "{ClientName: '<%=Session["ClientName"].ToString()%>' }",
+//                contentType: "application/json; charset=utf-8",
+//                success: function (data) {
+//                    var datafromServer = data.d.split(":");
+
+//                    $("[id$='txtMissionCode']").autocomplete({
+//                        source: datafromServer
+//                    });
+//                },
+//                error: function (XMLHttpRequest, textStatus, errorThrown) {
+//                    alert(textStatus);
+//                }
+//            });
+
+
+//          
+
+//        });
+
+
+
+//         $(document).ready(function () {
+
+//            //Code to fetch the users from webservice
+//            $.ajax({
+//                type: "POST",
+//                url: "Webservices/Autocomplete.asmx/GetMissionNameByClientName",
+//                dataType: "json",
+//                data: "{ClientName: '<%=Session["ClientName"].ToString()%>' }",
+//                contentType: "application/json; charset=utf-8",
+//                success: function (data) {
+//                    var datafromServer = data.d.split(":");
+
+//                    $("[id$='txtMission']").autocomplete({
+//                        source: datafromServer
+//                    });
+//                },
+//                error: function (XMLHttpRequest, textStatus, errorThrown) {
+//                    alert(textStatus);
+//                }
+//            });
+
+
+//          
+
+//        });
+
+//      
+//        ///Forces the page to postback to server;
+//        function forcePostback() {
+//            theForm.submit();
+//        }
+//          */
+                

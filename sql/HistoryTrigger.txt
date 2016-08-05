@@ -1,0 +1,48 @@
+DROP TRIGGER IF EXISTS history_trigger $$
+ 
+CREATE TRIGGER history_trigger
+BEFORE UPDATE ON clients
+    FOR EACH ROW
+    BEGIN
+        IF OLD.first_name != NEW.first_name
+        THEN
+                INSERT INTO history_clients
+                    (
+                        client_id    ,
+                        col          ,
+                        value        ,
+                        user_id      ,
+                        edit_time
+                    )
+                    VALUES
+                    (
+                        NEW.client_id,
+                        'first_name',
+                        NEW.first_name,
+                        NEW.editor_id,
+                        NEW.last_mod
+                    );
+        END IF;
+ 
+        IF OLD.last_name != NEW.last_name
+        THEN
+                INSERT INTO history_clients
+                    (
+                        client_id    ,
+                        col          ,
+                        value        ,
+                        user_id      ,
+                        edit_time
+                    )
+                    VALUES
+                    (
+                        NEW.client_id,
+                        'last_name',
+                        NEW.last_name,
+                        NEW.editor_id,
+                        NEW.last_mod
+                    );
+        END IF;
+ 
+    END;
+$$

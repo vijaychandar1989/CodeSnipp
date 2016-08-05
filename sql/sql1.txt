@@ -1,0 +1,19 @@
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `distrisoft`.`spLanguage`$$
+
+CREATE DEFINER=`okit`@`%` PROCEDURE `spLanguage`()
+SELECT * FROM ref WHERE Nature='LAN'$$
+
+DELIMITER ;
+
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `distrisoft`.`spLocalization`$$
+
+CREATE DEFINER=`okit`@`%` PROCEDURE `spLocalization`(IN ClientID   INT,IN Lang INT ,IN TableName VARCHAR(20))
+SELECT * FROM libelle WHERE Client_ID=ClientID   AND ref_id_Language=Lang AND Tablename=Tablename$$
+
+DELIMITER ;

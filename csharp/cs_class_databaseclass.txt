@@ -1,0 +1,99 @@
+
+using System;
+using System.Data;
+using System.Configuration;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+/// <summary>
+/// Summary description for DB
+/// </summary>
+public class DB
+{
+    SqlConnection conn = null;
+    SqlCommand cmd = null;
+    SqlDataReader rdr = null;
+        public DB()
+        {
+                //
+                // TODO: Add constructor logic here
+                //
+        }
+    public string GetConnectionString()
+    {
+        return ConfigurationManager.ConnectionStrings["TimeSheetConnectionString"].ConnectionString;
+    }
+    public SqlConnection GetConnection()
+    {
+        if (conn != null)
+        {
+            conn.Close();
+        }
+        conn = new SqlConnection(GetConnectionString());
+        conn.Open();
+        return conn;
+    }
+    public void CloseConn()
+    {
+        if (conn != null)
+        {
+            conn.Close();
+        }
+       
+       
+    }
+    public bool Check(string sql)
+    {
+        conn = new SqlConnection(GetConnectionString());
+        conn.Open();
+        cmd = new SqlCommand(sql, conn);
+        cmd.CommandType = CommandType.Text;
+        rdr = cmd.ExecuteReader();
+        //conn.Close();
+        return rdr.HasRows;
+    }
+    public int GetNumRows(string sql,string key)
+    {
+        conn = new SqlConnection(GetConnectionString());
+        conn.Open();
+        cmd = new SqlCommand(sql, conn);
+        cmd.CommandType = CommandType.Text;
+        rdr = cmd.ExecuteReader();
+        return Convert.ToInt32(rdr[0].ToString());
+        //conn.Close();
+        //return rdr.HasRows;
+    }
+    public int ExecuteQuery(string sql)
+    {
+        if (conn != null)
+        {
+            conn.Close();
+        }
+        conn = new SqlConnection(GetConnectionString());
+        conn.Open();
+        cmd = new SqlCommand(sql, conn);
+        cmd.CommandType = CommandType.Text;
+        return cmd.ExecuteNonQuery();
+
+    }
+    public string Redirect(string url, string Msg)
+    {
+        string javascript = "<script type='text/javascript'>alert( '" + Msg + "' );window.location.href='" + url + "';</script>";
+       
+        return javascript;
+    }
+    public DataSet getDataSet(string sql, string dataSetName)
+    {
+        DataSet dSet = new DataSet();
+        conn = new SqlConnection(GetConnectionString());
+        conn.Open();
+        SqlDataAdapter sAdapter = new SqlDataAdapter(sql, conn);
+        sAdapter.Fill(dSet, dataSetName);
+        conn.Close();
+        return (dSet);
+    }
+}

@@ -1,0 +1,14 @@
+try
+        {
+            SqlParameter[] param = new SqlParameter[2];
+            param[0] = new SqlParameter("option", lblMastername.Text);
+            param[1] = new SqlParameter("value", txtNewValue.Text);
+            SqlHelper.ExecuteNonQuery(connection.GetConnection(), "Master_Insert", param);
+            ASPxPopupControl1.ShowOnPageLoad = false;
+
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, Page.GetType(), "Validationalert", "window.alert('" + ex.Message.ToString() + "');",true);
+            
+        }

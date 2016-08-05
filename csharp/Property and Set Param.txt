@@ -1,0 +1,21 @@
+SP Parameter
+
+Find:in ([a-z0-9_]+) ([a-z0-9_'(')]+),
+
+
+
+Replace:
+For Info class:
+
+private string \1;\n  public string _\1\n{\nget\n{\nreturn \1;\n}\nset\n{\nif \(value == String.Empty\)\n{\n\1 = null;\n}\nelse\n{\n\1 = value;\n}\n}\n}
+
+
+Replace: 
+For Setting Paramter;
+
+db.SetParameterValue\(dbCommand, "\1", _I._\1\);
+
+
+Replace 
+AddInParamtere
+db.AddInParameter\(dbCommand, \"\1\", DbType.\2, DBNull.Value\);
